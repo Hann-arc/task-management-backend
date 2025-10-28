@@ -107,123 +107,114 @@ The server will run at: http://localhost:8080
 
     1. Register a User
 
-      *Request*
+*Request*
+```json
+POST v1/api/auth/register
+Content-Type: application/json
+{
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "password": "securepassword123"
+}
+```
 
-        ```json
-        POST v1/api/auth/register
-        Content-Type: application/json
-
-        {
-          "name": "John Doe",
-          "email": "johndoe@example.com",
-          "password": "securepassword123"
-        }
-       ```
-
-     *Response*
-
-         ```json
-        {
-         "message": "user registered successfully"
-        }
-         ```
+*Response*
+```json
+{
+    "message": "user registered successfully"
+}
+```
 
     2. Login & Get JWT Token
 
-      *Request*
+*Request*
+```json
+POST v1/api/auth/login
+Content-Type: application/json
+{
+    "email": "johndoe@example.com",
+    "password": "securepassword123"
+}
+```
 
-        ```json
-        POST v1/api/auth/login
-        Content-Type: application/json
+*Response*
+```json
+{
+    "message": "login successfully",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…"
+}
+```
 
-        {
-          "email": "johndoe@example.com",
-          "password": "securepassword123"
-        }
-       ```
-
-      *Response*
-
-         ```json
-        {
-         "message": "login successfully",
-         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9…"
-        }
-         ```
-    
     3. Create a Project
 
-      *Request*
+*Request*
+```json
+POST v1/api/projects
+Authorization: Bearer <your-jwt-token>
+Content-Type: application/json
+{
+    "name": "Project Alpha",
+    "description": "Task management project"
+}
+```
 
-        ```json
-        POST v1/api/projects
-        Authorization: Bearer <your-jwt-token>
-        Content-Type: application/json
-
-        {
-          "name": "Project Alpha",
-          "description": "Task management project"
-        }
-       ```
-
-     *Response*
-
-         ```json
-        {
-         "success": true,
-         "message": "Project created successfully",
-         "data": {
-                    "id": "a4f3e4dc-62ie-478c-9a82-1f8e1e54awsz",
-                    "name": "Project Alpha",
-                    "description": "Task management project",
-                    "owner_id": "c8a1bda1-7d4s-48a5-8810-18e2516d7b65",
-                    "created_at": "2025-10-28T11:15:09.9293128+07:00",
-                    "updated_at": "2025-10-28T11:15:09.9293128+07:00"
-                 }
-        }
-        ```
+*Response*
+```json
+{
+    "success": true,
+    "message": "Project created successfully",
+    "data": {
+        "id": "a4f3e4dc-62ie-478c-9a82-1f8e1e54awsz",
+        "name": "Project Alpha",
+        "description": "Task management project",
+        "owner_id": "c8a1bda1-7d4s-48a5-8810-18e2516d7b65",
+        "created_at": "2025-10-28T11:15:09.9293128+07:00",
+        "updated_at": "2025-10-28T11:15:09.9293128+07:00"
+    }
+}
+```
 
     4. Create a Task in a Board
 
-      *Request*
-
-        ```json
-        POST v1/api/boards/<board_id>/tasks
-        Authorization: Bearer <your-jwt-token>
-        Content-Type: application/json
-
+*Request*
+```json
+POST v1/api/boards/<board_id>/tasks
+Authorization: Bearer <your-jwt-token>
+Content-Type: application/json
+{
+    "title": "Implement WebSocket",
+    "description": "integrate websocket to project",
+    "priority": "high",
+    "due_date": "2025-12-31",
+    "assignee_id": "c8a1bda1-7d4s-48a5-8810-18e2516d7b65",
+    "labels": [
         {
-          "title": "Implement WebSocket",
-          "description": "integrate websocket to project",
-          "priority": "high",
-          "due_date": "2025-12-31T23:59:59Z",
-          "assignee_id": "c8a1bda1-7d4s-48a5-8810-18e2516d7b65",
-          "labels": [
-                        { "name": "backend", "color": "blue" }
-                    ]
+            "name": "backend",
+            "color": "blue"
         }
-           ```
-    
-    *Response*
+    ]
+}
+```
 
-     ```json
-    {
-     "success": true,
-     "message": "Task created successfully",
-     "data": {
-                "id": "37d1d00a-399b-4aa6-b861-005b9f274220",
-                "board_id": "866ea35e-3a90-427a-8ade-9a93454e43aa",
-                "title": "integrate websocket to project",
-                "description": "Selesaikan Cbackend UD task dengan soft delete",
-                "priority": "high",
-                "due_date": "2025-12-31T23:59:59Z",
-                "assignee_id": "c8a1bda1-7d4s-48a5-8810-18e2516d7b65",
-                "created_by": "4d6a1748-2f27-4432-9f0f-87969c1fc660",
-                "created_at": "2025-10-28T11:28:57.844025+07:00",
-                "updated_at": "2025-10-28T11:28:57.844025+07:00"
-             }
+*Response*
+```json
+{
+    "success": true,
+    "message": "Task created successfully",
+    "data": {
+        "id": "37d1d00a-399b-4aa6-b861-005b9f274220",
+        "board_id": "866ea35e-3a90-427a-8ade-9a93454e43aa",
+        "title": "integrate websocket to project",
+        "description": "Selesaikan Cbackend UD task dengan soft delete",
+        "priority": "high",
+        "due_date": "2025-12-31",
+        "assignee_id": "c8a1bda1-7d4s-48a5-8810-18e2516d7b65",
+        "created_by": "4d6a1748-2f27-4432-9f0f-87969c1fc660",
+        "created_at": "2025-10-28T11:28:57.844025+07:00",
+        "updated_at": "2025-10-28T11:28:57.844025+07:00"
     }
-     ```
+}
+```
 
     5. Connect WebSocket for Notifications
 
