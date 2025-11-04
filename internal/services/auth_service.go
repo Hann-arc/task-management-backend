@@ -34,14 +34,18 @@ func (s *AuthService) Register(name, email, password string) error {
 
 // Login an existing user
 func (s *AuthService) Login(email, password string) (string, error) {
+
+	// Find user by email
 	user, err := s.userRepo.FindByEmail(email)
 	if err != nil {
-		return "", errors.New("email not found")
+		return "", errors.New("Email not found")
 	}
 
+	// Check password
 	if !utils.CheckPasswordHash(password, user.PasswordHash) {
-		return "", errors.New("invalid password")
+		return "", errors.New("Invalid password")
 	}
 
+	// Generate JWT token
 	return utils.GenerateToken(user.ID)
 }
